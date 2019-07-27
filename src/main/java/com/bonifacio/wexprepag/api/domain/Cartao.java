@@ -8,16 +8,19 @@ import org.springframework.util.StringUtils;
 
 public class Cartao {
 
-	private String nome;
-	
 	private String numero;
+	
+	private String nome;
 	
 	private LocalDate validade;
 	
 	private String senha;
 	
 	private BigDecimal saldo;
-
+	
+	@Deprecated
+	public Cartao() { }
+	
 	private Cartao(Builder builder) {
 		
 		this.nome = Objects.requireNonNull(builder.nome);

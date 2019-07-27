@@ -1,19 +1,21 @@
-package com.bonifacio.wexprepag.api.gateway.http.model;
+package com.bonifacio.wexprepag.api.gateway.database.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class EmissaoCartaoResponse {
+@Entity
+@Table(name = "cartao")
+public class CartaoData {
 
+	@Id
 	private String numero;
-	
-	private String cvv;
 
 	private String nome;
 
-	@JsonFormat(pattern = "MM/yy")
 	private LocalDate validade;
 
 	private String senha;
@@ -58,13 +60,5 @@ public class EmissaoCartaoResponse {
 
 	public void setSaldo(BigDecimal saldo) {
 		this.saldo = saldo;
-	}
-
-	public String getCvv() {
-		return cvv;
-	}
-
-	public void setCvv(String cvv) {
-		this.cvv = cvv;
 	}
 }

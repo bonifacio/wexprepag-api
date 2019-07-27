@@ -2,6 +2,7 @@ package com.bonifacio.wexprepag.api.usecase;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class EmiteCartao {
 	private PersisteCartaoGateway persisteCartaoGateway;
 	
 	@Autowired
-	public EmiteCartao(PersisteCartaoGateway criaCartaoGateway) {
+	public EmiteCartao(
+			PersisteCartaoGateway criaCartaoGateway) {
 		this.persisteCartaoGateway = criaCartaoGateway;
 	}
 
@@ -38,7 +40,7 @@ public class EmiteCartao {
 	}
 
 	private LocalDate obterValidade() {
-		return LocalDate.now().plusYears(VALIDADE_EM_ANOS);
+		return LocalDate.now().plusYears(VALIDADE_EM_ANOS).with(TemporalAdjusters.lastDayOfMonth());
 	}
 
 	private String gerarSenha() {
