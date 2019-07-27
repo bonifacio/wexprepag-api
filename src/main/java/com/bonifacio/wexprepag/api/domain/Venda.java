@@ -86,8 +86,8 @@ public class Venda {
 
 	public void setValor(BigDecimal valor) {
 		this.valor = Objects.requireNonNull(valor);
-		if (this.valor.compareTo(BigDecimal.ZERO) < 0) {
-			throw new IllegalArgumentException("valor não pode ser menor que zero");
+		if (this.valor.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException("valor deve ser maior ou igual a zero");
 		}
 	}
 

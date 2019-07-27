@@ -33,21 +33,50 @@ public class Cartao {
 	public String getNome() {
 		return nome;
 	}
+	
+	@Deprecated
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 	public String getNumero() {
 		return numero;
+	}
+	
+	@Deprecated
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public LocalDate getValidade() {
 		return validade;
 	}
+	
+	@Deprecated
+	public void setValidade(LocalDate validade) {
+		this.validade = validade;
+	}
 
 	public String getSenha() {
 		return senha;
 	}
+	
+	@Deprecated
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 
 	public BigDecimal getSaldo() {
 		return saldo;
+	}
+	
+	@Deprecated
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
+	}
+	
+	public void computarTransacao(Transacao transacao) {
+		this.saldo = this.saldo.add(transacao.getValor());
 	}
 	
 	public String getCvv() {
