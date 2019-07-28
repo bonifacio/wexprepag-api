@@ -4,12 +4,13 @@ import java.math.BigDecimal;
 
 public class ResultadoOperacao {
 
-	public ResultadoOperacao(BigDecimal add) {
-		// TODO Auto-generated constructor stub
-	}
+	private BigDecimal saldo;
 
-	public ResultadoOperacao() {
-		// TODO Auto-generated constructor stub
+	public ResultadoOperacao(BigDecimal saldo) {
+		this.saldo = saldo;
 	}
-
+	
+	public BigDecimal getSaldo() {
+		return saldo;
+	}
 }

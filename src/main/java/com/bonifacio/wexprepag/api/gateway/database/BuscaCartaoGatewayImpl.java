@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bonifacio.wexprepag.api.domain.Cartao;
-import com.bonifacio.wexprepag.api.domain.exception.CartaoInexistenteException;
+import com.bonifacio.wexprepag.api.domain.exception.BusinessException;
+import com.bonifacio.wexprepag.api.domain.exception.MensagemErro;
 import com.bonifacio.wexprepag.api.gateway.BuscaCartaoGateway;
 import com.bonifacio.wexprepag.api.gateway.database.entity.CartaoData;
 import com.bonifacio.wexprepag.api.gateway.database.repository.CartaoRepository;
@@ -29,7 +30,7 @@ public class BuscaCartaoGatewayImpl implements BuscaCartaoGateway {
 	public Cartao buscarPor(String numero) {
 		Optional<CartaoData> cartaoData = cartaoRepository.findById(numero);
 		if (cartaoData.isEmpty()) {
-			throw new CartaoInexistenteException();
+			throw new BusinessException(MensagemErro.CARTAO_INEXISTENTE);
 		}
 		return mapper.map(cartaoData.get(), Cartao.class);
 	}

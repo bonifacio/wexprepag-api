@@ -6,11 +6,11 @@ public class BusinessException extends RuntimeException {
 
 	private String codigo;
 	
-	public BusinessException(String codigo, String mensagem) {
-		super(mensagem);
-		this.codigo = codigo;
+	public BusinessException(MensagemErro mensagemErro) {
+		super(mensagemErro.getMensagem());
+		this.codigo = mensagemErro.getCodigo();
 	}
-	
+
 	public String getCodigo() {
 		return codigo;
 	}

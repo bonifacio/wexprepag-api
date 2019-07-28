@@ -43,7 +43,7 @@ public class AutorizaVenda {
 		
 		registraTransacao.executar(transacao);
 		
-		return new ResultadoOperacao();
+		return new ResultadoOperacao(cartao.getSaldo());
 	}
 
 }
