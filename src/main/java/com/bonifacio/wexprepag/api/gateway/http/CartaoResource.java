@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoNovo;
 import com.bonifacio.wexprepag.api.gateway.http.model.EmissaoCartaoRequest;
 import com.bonifacio.wexprepag.api.gateway.http.model.EmissaoCartaoResponse;
 import com.bonifacio.wexprepag.api.usecase.EmiteCartao;
@@ -25,7 +25,7 @@ public class CartaoResource {
 	
 	@PostMapping
 	public ResponseEntity<EmissaoCartaoResponse> emitir(@RequestBody EmissaoCartaoRequest emissaoCartaoRequestBody) {
-		Cartao cartao = emiteCartao.emitir(emissaoCartaoRequestBody.getNome(), emissaoCartaoRequestBody.getSaldo());
+		CartaoNovo cartao = emiteCartao.emitir(emissaoCartaoRequestBody.getNome(), emissaoCartaoRequestBody.getSaldo());
 		return ResponseEntity.ok(EmissaoCartaoResponse.of(cartao));
 	}
 }

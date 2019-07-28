@@ -8,9 +8,10 @@ import java.util.Objects;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.util.StringUtils;
 
-import com.bonifacio.wexprepag.api.usecase.security.SenhaUtil;
+import com.bonifacio.wexprepag.api.domain.security.Cvv;
+import com.bonifacio.wexprepag.api.domain.security.SenhaUtil;
 
-public class Cartao {
+public class CartaoNovo {
 	
 	private static final long VALIDADE_EM_ANOS = 2;
 	
@@ -28,7 +29,7 @@ public class Cartao {
 
 	private String senhaCriptografada;
 	
-	public Cartao(String nome, BigDecimal saldo) {
+	public CartaoNovo(String nome, BigDecimal saldo) {
 		
 		this.nome = validarNome(nome);
 		this.saldo = validarSaldo(saldo);
@@ -62,22 +63,8 @@ public class Cartao {
 		return senhaCriptografada;
 	}
 	
-	public void computarTransacao(Transacao transacao) {
-		this.saldo = this.saldo.add(transacao.getValor());
-	}
-	
 	public String getCvv() {
-		
-		String ultimoDigitoCartao = numero.substring(numero.length()-1);
-		int diaDaSemanaVencimento = validade.getDayOfWeek().getValue();
-		String nonoDigitoCartao = numero.substring(8, 8 + 1);
-		
-		StringBuilder cvv = new StringBuilder()
-				.append(ultimoDigitoCartao)
-				.append(diaDaSemanaVencimento)
-				.append(nonoDigitoCartao);
-		
-		return cvv.toString();
+		return new Cvv(numero, validade).get();
 	}
 	
 	private String validarNome(String nome) {

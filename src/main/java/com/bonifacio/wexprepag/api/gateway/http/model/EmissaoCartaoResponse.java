@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoNovo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class EmissaoCartaoResponse {
@@ -25,7 +25,7 @@ public class EmissaoCartaoResponse {
 	@Deprecated
 	public EmissaoCartaoResponse() { }
 
-	private EmissaoCartaoResponse(Cartao cartao) {
+	private EmissaoCartaoResponse(CartaoNovo cartao) {
 		this.cvv = cartao.getCvv();
 		this.nome = cartao.getNome();
 		this.numero = cartao.getNumero();
@@ -58,7 +58,7 @@ public class EmissaoCartaoResponse {
 		return cvv;
 	}
 
-	public static EmissaoCartaoResponse of(Cartao cartao) {
+	public static EmissaoCartaoResponse of(CartaoNovo cartao) {
 		Objects.requireNonNull(cartao, "o objeto cartao não pode ser nulo");
 		return new EmissaoCartaoResponse(cartao);
 	}

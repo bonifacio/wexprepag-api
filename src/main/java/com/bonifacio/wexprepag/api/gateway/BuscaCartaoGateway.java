@@ -1,8 +1,8 @@
 package com.bonifacio.wexprepag.api.gateway;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoLeitura;
 
 public interface BuscaCartaoGateway {
 
-	Cartao buscarPor(String numero);
+	CartaoLeitura buscarPor(String numero);
 }

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoNovo;
 import com.bonifacio.wexprepag.api.gateway.PersisteCartaoGateway;
 
 @Service
@@ -18,9 +18,9 @@ public class EmiteCartao {
 		this.persisteCartaoGateway = criaCartaoGateway;
 	}
 
-	public Cartao emitir(String nome, BigDecimal saldo) {
+	public CartaoNovo emitir(String nome, BigDecimal saldo) {
 		
-		Cartao cartao = new Cartao(nome, saldo);
+		CartaoNovo cartao = new CartaoNovo(nome, saldo);
 		persisteCartaoGateway.persistir(cartao);
 		return cartao;
 	}

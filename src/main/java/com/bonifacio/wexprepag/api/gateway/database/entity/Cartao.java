@@ -5,13 +5,12 @@ import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoLeitura;
+import com.bonifacio.wexprepag.api.domain.CartaoNovo;
 
 @Entity
-@Table(name = "cartao")
-public class CartaoData {
+public class Cartao {
 
 	@Id
 	private String numero;
@@ -25,11 +24,11 @@ public class CartaoData {
 	private BigDecimal saldo;
 	
 	@Deprecated
-	public CartaoData() { }
+	public Cartao() { }
 
-	private CartaoData(Cartao cartao) {
+	private Cartao(CartaoNovo cartao) {
 		this.numero = cartao.getNumero();
-		this.nome = cartao.getNumero();
+		this.nome = cartao.getNome();
 		this.validade = cartao.getValidade();
 		this.senha = cartao.getSenhaCriptografada();
 		this.saldo = cartao.getSaldo();
@@ -54,8 +53,23 @@ public class CartaoData {
 	public BigDecimal getSaldo() {
 		return saldo;
 	}
+	
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
+	}
 
-	public static CartaoData of(Cartao cartao) {
-		return new CartaoData(cartao);
+	public static Cartao of(CartaoNovo cartao) {
+		return new Cartao(cartao);
+	}
+
+	public CartaoLeitura getCartaoLeitura() {
+		
+		return CartaoLeitura.builder()
+				.comNome(nome)
+				.comNumero(numero)
+				.comSaldo(saldo)
+				.comSenha(senha)
+				.comValidade(validade)
+				.build();
 	}
 }

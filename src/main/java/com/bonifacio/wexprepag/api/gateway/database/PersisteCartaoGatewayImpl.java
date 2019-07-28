@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoNovo;
 import com.bonifacio.wexprepag.api.gateway.PersisteCartaoGateway;
-import com.bonifacio.wexprepag.api.gateway.database.entity.CartaoData;
+import com.bonifacio.wexprepag.api.gateway.database.entity.Cartao;
 import com.bonifacio.wexprepag.api.gateway.database.repository.CartaoRepository;
 
 @Service
@@ -25,9 +25,9 @@ public class PersisteCartaoGatewayImpl implements PersisteCartaoGateway {
 	}
 
 	@Override
-	public void persistir(Cartao cartao) {
+	public void persistir(CartaoNovo cartao) {
 		Objects.requireNonNull(cartao, "O objeto cartao não pode ser nulo");
-		cartaoRepository.save(CartaoData.of(cartao));
+		cartaoRepository.save(Cartao.of(cartao));
 		LOG.info("Cartão {} gravado na base de dados", cartao.getNumero());
 	}
 }

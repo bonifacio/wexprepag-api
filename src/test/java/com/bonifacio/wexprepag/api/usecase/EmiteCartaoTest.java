@@ -14,7 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoNovo;
 import com.bonifacio.wexprepag.api.gateway.PersisteCartaoGateway;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,9 +29,9 @@ public class EmiteCartaoTest {
 	@Test
 	public void deveEmitirCartao_quandoTodosOsParametrosForemPassadosCorretamente() {
 		
-		doNothing().when(persisteCartaoGateway).persistir(any(Cartao.class));
-		Cartao cartaoRetornado = emiteCartao.emitir("João", BigDecimal.ZERO);
-		verify(persisteCartaoGateway, times(1)).persistir(any(Cartao.class));
+		doNothing().when(persisteCartaoGateway).persistir(any(CartaoNovo.class));
+		CartaoNovo cartaoRetornado = emiteCartao.emitir("João", BigDecimal.ZERO);
+		verify(persisteCartaoGateway, times(1)).persistir(any(CartaoNovo.class));
 		assertNotNull(cartaoRetornado);
 	}
 	

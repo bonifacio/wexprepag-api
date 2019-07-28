@@ -8,11 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import com.bonifacio.wexprepag.api.domain.VendaNova;
 
 @Entity
-@Table(name = "transacao")
-public class TransacaoData {
+public class Venda {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,17 @@ public class TransacaoData {
 	private BigDecimal valor;
 	
 	@ManyToOne
-	private CartaoData cartao;
+	private Cartao cartao;
+	
+	@Deprecated
+	public Venda() { }
+
+	public Venda(VendaNova vendaNova) {
+		estabelecimento = vendaNova.getEstabelecimento();
+		data = LocalDateTime.now();
+		saldoAnterior = vendaNova.getSaldoAnterior();
+		valor = vendaNova.getValor();
+	}
 
 	public Long getId() {
 		return id;
@@ -69,11 +79,15 @@ public class TransacaoData {
 		this.valor = valor;
 	}
 
-	public CartaoData getCartao() {
+	public Cartao getCartao() {
 		return cartao;
 	}
 
-	public void setCartao(CartaoData cartao) {
+	public void setCartao(Cartao cartao) {
 		this.cartao = cartao;
+	}
+
+	public static Venda of(VendaNova venda) {
+		return new Venda(venda);
 	}
 }

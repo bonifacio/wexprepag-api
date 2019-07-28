@@ -6,32 +6,32 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-public class CartaoTest {
+public class CartaoNovoTest {
 
 	@Test(expected = NullPointerException.class)
 	public void deveLancarExcecao_quandoNomeForNulo() {
-		new Cartao(null, BigDecimal.ZERO);
+		new CartaoNovo(null, BigDecimal.ZERO);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void deveLancarExcecao_quandoNomeForVazio() {
-		new Cartao(" ", BigDecimal.ZERO);
+		new CartaoNovo(" ", BigDecimal.ZERO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void deveLancarExcecao_quandoValorForNulo() {
-		new Cartao("João", null);
+		new CartaoNovo("João", null);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void deveLancarExcecao_quandoSaldoForMenorQueZero() {
-		new Cartao("João", BigDecimal.valueOf(-1));
+		new CartaoNovo("João", BigDecimal.valueOf(-1));
 	}
 	
 	@Test
 	public void deveInstanciarUmCartao_quandoForemPassadosTodosOsCamposValidos() {
 		
-		Cartao cartao = new Cartao("João", BigDecimal.ZERO);
+		CartaoNovo cartao = new CartaoNovo("João", BigDecimal.ZERO);
 		assertNotNull(cartao);
 		assertNotNull(cartao.getNome());
 		assertNotNull(cartao.getNumero());

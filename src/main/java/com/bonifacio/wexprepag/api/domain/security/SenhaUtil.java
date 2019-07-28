@@ -1,4 +1,4 @@
-package com.bonifacio.wexprepag.api.usecase.security;
+package com.bonifacio.wexprepag.api.domain.security;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

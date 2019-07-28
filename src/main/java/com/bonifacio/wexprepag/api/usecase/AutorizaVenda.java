@@ -1,46 +1,41 @@
 package com.bonifacio.wexprepag.api.usecase;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.bonifacio.wexprepag.api.domain.Cartao;
+import com.bonifacio.wexprepag.api.domain.CartaoLeitura;
 import com.bonifacio.wexprepag.api.domain.ResultadoOperacao;
-import com.bonifacio.wexprepag.api.domain.Transacao;
-import com.bonifacio.wexprepag.api.domain.Venda;
+import com.bonifacio.wexprepag.api.domain.VendaNova;
 import com.bonifacio.wexprepag.api.gateway.BuscaCartaoGateway;
-import com.bonifacio.wexprepag.api.usecase.security.SegurancaValidator;
 
 @Service
 public class AutorizaVenda {
 
 	private BuscaCartaoGateway buscaCartaoGateway;
 	
-	private RegistraTransacao registraTransacao;
+	private RegistraVenda registraVenda;
+
+	private AtualizaSaldoCartao atualizaSaldoCartao;
 	
 	@Autowired
-	public AutorizaVenda(BuscaCartaoGateway buscaCartaoGateway, RegistraTransacao registraTransacao) {
+	public AutorizaVenda(
+			BuscaCartaoGateway buscaCartaoGateway,
+			RegistraVenda registraVenda,
+			AtualizaSaldoCartao atualizaSaldoCartao) {
+		
 		this.buscaCartaoGateway = buscaCartaoGateway;
-		this.registraTransacao = registraTransacao;
+		this.registraVenda = registraVenda;
+		this.atualizaSaldoCartao = atualizaSaldoCartao;
 	}
 
-	@Transactional
-	public ResultadoOperacao executar(Venda venda) {
+	public ResultadoOperacao autorizar(VendaNova vendaNova) {
 
-		Cartao cartao = buscaCartaoGateway.buscarPor(venda.getCartao());
-		
-		SegurancaValidator.validar(venda, cartao);
-		
-		Transacao transacao = Transacao.builder()
-			.comEstabelecimento(venda.getEstabelecimento())
-			.comSaldoAnterior(cartao.getSaldo())
-			.comValor(venda.getValor().negate())
-			.comCartao(cartao)
-			.build();
-		
-		registraTransacao.executar(transacao);
-		
-		return new ResultadoOperacao(cartao.getSaldo());
+		CartaoLeitura cartaoLeitura = buscaCartaoGateway.buscarPor(vendaNova.getNumeroCartao());
+		vendaNova.setCartao(cartaoLeitura);
+		registraVenda.registrar(vendaNova);
+		BigDecimal saldo = atualizaSaldoCartao.atualizar(vendaNova);
+		return new ResultadoOperacao(saldo);
 	}
-
 }
