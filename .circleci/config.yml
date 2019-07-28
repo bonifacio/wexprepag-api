@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-
+      - run: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      - run: mvn test
+      - run: mvn sonar:sonar -Dsonar.projectKey=bonifacio_wexprepag-api -Dsonar.organization=bonifacio-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_WEX
+      - store_artifacts:
+          path:  target
