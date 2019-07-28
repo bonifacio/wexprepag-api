@@ -9,8 +9,6 @@ public class CartaoLeitura {
 
 	private String numero;
 
-	private String nome;
-
 	private LocalDate validade;
 
 	private String senha;
@@ -20,18 +18,9 @@ public class CartaoLeitura {
 	private CartaoLeitura(Builder builder) {
 		
 		this.numero = builder.numero;
-		this.nome = builder.nome;
 		this.validade = builder.validade;
 		this.senha = builder.senha;
 		this.saldo = builder.saldo;
-	}
-	
-	public String getNome() {
-		return nome;
-	}
-	
-	public String getNumero() {
-		return numero;
 	}
 	
 	public BigDecimal getSaldo() {
@@ -56,7 +45,6 @@ public class CartaoLeitura {
 
 	public static final class Builder {
 		private String numero;
-		private String nome;
 		private LocalDate validade;
 		private String senha;
 		private BigDecimal saldo;
@@ -66,11 +54,6 @@ public class CartaoLeitura {
 
 		public Builder comNumero(String numero) {
 			this.numero = numero;
-			return this;
-		}
-
-		public Builder comNome(String nome) {
-			this.nome = nome;
 			return this;
 		}
 

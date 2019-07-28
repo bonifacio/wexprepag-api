@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class ResultadoOperacao {
 	
-	private final String codigo = "00";
+	private static final String CODIGO = "00";
 
 	private BigDecimal saldo;
 
@@ -17,6 +17,6 @@ public class ResultadoOperacao {
 	}
 	
 	public String getCodigo() {
-		return codigo;
+		return CODIGO;
 	}
 }

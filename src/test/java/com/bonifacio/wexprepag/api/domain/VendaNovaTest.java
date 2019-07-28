@@ -8,6 +8,10 @@ import java.time.temporal.TemporalAdjusters;
 
 import org.junit.Test;
 
+import com.bonifacio.wexprepag.api.domain.exception.BusinessException;
+import com.bonifacio.wexprepag.api.domain.security.Cvv;
+import com.bonifacio.wexprepag.api.domain.security.SenhaUtil;
+
 public class VendaNovaTest {
 
 	@Test(expected = NullPointerException.class)
@@ -94,15 +98,8 @@ public class VendaNovaTest {
 	@Test
 	public void deveInstanciarVenda_quandoTodosOsCamposForemValidos() {
 
-		VendaNova venda = VendaNova.builder()
-				.comCartao("1234567890987654")
-				.comCvv("123")
-				.comEstabelecimento("Loja")
-				.comSenha("1234")
-				.comValidade(LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()))
-				.comValor(BigDecimal.valueOf(1))
-				.build();
-		
+		VendaNova venda = construirVendaValida();
+
 		assertNotNull(venda);
 		assertNotNull(venda.getNumeroCartao());
 		assertNotNull(venda.getCvv());
@@ -110,5 +107,95 @@ public class VendaNovaTest {
 		assertNotNull(venda.getSenha());
 		assertNotNull(venda.getValidade());
 		assertNotNull(venda.getValor());
+	}
+
+	@Test(expected = BusinessException.class)
+	public void deveLancarExcecao_quandoForPassadoUmCartaoComCvvInvalido() {
+
+		VendaNova venda = construirVendaValida();
+		
+		LocalDate validadeDiferente = venda.getValidade().plusDays(1);
+		
+		CartaoLeitura cartao = CartaoLeitura.builder()
+				.comNumero(venda.getNumeroCartao())
+				.comValidade(validadeDiferente)
+				.build();
+		
+		venda.setCartao(cartao);
+	}
+	
+	@Test(expected = BusinessException.class)
+	public void deveLancarExcecao_quandoForPassadoUmCartaoComSenhaInvalido() {
+
+		VendaNova venda = construirVendaValida();
+		
+		CartaoLeitura cartao = CartaoLeitura.builder()
+				.comNumero(venda.getNumeroCartao())
+				.comValidade(venda.getValidade())
+				.comSenha("")
+				.build();
+		
+		venda.setCartao(cartao);
+	}
+	
+	@Test(expected = BusinessException.class)
+	public void deveLancarExcecao_quandoForPassadoUmCartaoComValidadeUltrapassada() {
+
+		VendaNova venda = construirVendaValida();
+		
+		CartaoLeitura cartao = CartaoLeitura.builder()
+				.comNumero(venda.getNumeroCartao())
+				.comValidade(venda.getValidade().minusMonths(1))
+				.comSenha(SenhaUtil.encriptar(venda.getSenha()))
+				.build();
+		
+		venda.setCartao(cartao);
+	}
+	
+	@Test(expected = BusinessException.class)
+	public void deveLancarExcecao_quandoForPassadoUmCartaoComSaldoInsuficiente() {
+
+		VendaNova venda = construirVendaValida();
+		
+		CartaoLeitura cartao = CartaoLeitura.builder()
+				.comNumero(venda.getNumeroCartao())
+				.comValidade(venda.getValidade())
+				.comSenha(SenhaUtil.encriptar(venda.getSenha()))
+				.comSaldo(BigDecimal.ZERO)
+				.build();
+		
+		venda.setCartao(cartao);
+	}
+	
+	@Test
+	public void deveAtribuirCartaoESaldoAtual_quandoOCartaoEACompraForemValidos() {
+		
+		VendaNova venda = construirVendaValida();
+		
+		CartaoLeitura cartao = CartaoLeitura.builder()
+				.comNumero(venda.getNumeroCartao())
+				.comValidade(venda.getValidade())
+				.comSaldo(BigDecimal.TEN)
+				.comSenha(SenhaUtil.encriptar(venda.getSenha()))
+				.build();
+		
+		venda.setCartao(cartao);
+		assertNotNull(venda.getCartao());
+		assertNotNull(venda.getSaldoAnterior());
+	}
+
+	private VendaNova construirVendaValida() {
+		
+		String numero = "1234567890987654";
+		LocalDate validade = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+		
+		return VendaNova.builder()
+				.comCartao(numero)
+				.comCvv(new Cvv(numero, validade).get())
+				.comEstabelecimento("Loja")
+				.comSenha("1234")
+				.comValidade(validade)
+				.comValor(BigDecimal.valueOf(1))
+				.build();
 	}
 }

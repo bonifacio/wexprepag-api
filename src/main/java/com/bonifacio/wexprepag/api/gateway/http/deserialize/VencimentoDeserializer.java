@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -24,8 +23,7 @@ public class VencimentoDeserializer extends StdDeserializer<LocalDate> {
 	}
 
 	@Override
-	public LocalDate deserialize(JsonParser p, DeserializationContext ctxt)
-			throws IOException, JsonProcessingException {
+	public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 		
 		String validade = String.format("01/%s", p.getText());
 		try {

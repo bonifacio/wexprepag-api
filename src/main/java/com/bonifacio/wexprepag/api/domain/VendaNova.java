@@ -85,14 +85,14 @@ public class VendaNova {
 	}
 
 	private void validar(CartaoLeitura cartao) {
+		if (cartao.getValidade().isBefore(LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()))) {
+			throw new BusinessException(MensagemErro.CARTAO_EXPIRADO);
+		}
 		if (!this.cvv.equals(cartao.getCvv())) {
 			throw new BusinessException(MensagemErro.CVV_INVALIDO);
 		}
 		if (!SenhaUtil.encriptar(senha).equals(cartao.getSenha())) {
 			throw new BusinessException(MensagemErro.SENHA_INVALIDA);
-		}
-		if (cartao.getValidade().isBefore(LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()))) {
-			throw new BusinessException(MensagemErro.CARTAO_EXPIRADO);
 		}
 		if (cartao.getSaldo().add(valor.negate()).compareTo(BigDecimal.ZERO) < 0) {
 			throw new BusinessException(MensagemErro.SALDO_INSUFICIENTE);
