@@ -65,7 +65,6 @@ public class Cartao {
 	public CartaoLeitura getCartaoLeitura() {
 		
 		return CartaoLeitura.builder()
-				.comNome(nome)
 				.comNumero(numero)
 				.comSaldo(saldo)
 				.comSenha(senha)
