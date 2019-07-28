@@ -8,8 +8,9 @@ import java.time.temporal.TemporalAdjusters;
 
 import org.junit.Test;
 
+import com.bonifacio.wexprepag.api.CartaoFactory;
+import com.bonifacio.wexprepag.api.VendaFactory;
 import com.bonifacio.wexprepag.api.domain.exception.BusinessException;
-import com.bonifacio.wexprepag.api.domain.security.Cvv;
 import com.bonifacio.wexprepag.api.domain.security.SenhaUtil;
 
 public class VendaNovaTest {
@@ -98,7 +99,7 @@ public class VendaNovaTest {
 	@Test
 	public void deveInstanciarVenda_quandoTodosOsCamposForemValidos() {
 
-		VendaNova venda = construirVendaValida();
+		VendaNova venda = VendaFactory.construir();
 
 		assertNotNull(venda);
 		assertNotNull(venda.getNumeroCartao());
@@ -112,7 +113,7 @@ public class VendaNovaTest {
 	@Test(expected = BusinessException.class)
 	public void deveLancarExcecao_quandoForPassadoUmCartaoComCvvInvalido() {
 
-		VendaNova venda = construirVendaValida();
+		VendaNova venda = VendaFactory.construir();
 		
 		LocalDate validadeDiferente = venda.getValidade().plusDays(1);
 		
@@ -127,7 +128,7 @@ public class VendaNovaTest {
 	@Test(expected = BusinessException.class)
 	public void deveLancarExcecao_quandoForPassadoUmCartaoComSenhaInvalido() {
 
-		VendaNova venda = construirVendaValida();
+		VendaNova venda = VendaFactory.construir();
 		
 		CartaoLeitura cartao = CartaoLeitura.builder()
 				.comNumero(venda.getNumeroCartao())
@@ -141,7 +142,7 @@ public class VendaNovaTest {
 	@Test(expected = BusinessException.class)
 	public void deveLancarExcecao_quandoForPassadoUmCartaoComValidadeUltrapassada() {
 
-		VendaNova venda = construirVendaValida();
+		VendaNova venda = VendaFactory.construir();
 		
 		CartaoLeitura cartao = CartaoLeitura.builder()
 				.comNumero(venda.getNumeroCartao())
@@ -155,7 +156,7 @@ public class VendaNovaTest {
 	@Test(expected = BusinessException.class)
 	public void deveLancarExcecao_quandoForPassadoUmCartaoComSaldoInsuficiente() {
 
-		VendaNova venda = construirVendaValida();
+		VendaNova venda = VendaFactory.construir();
 		
 		CartaoLeitura cartao = CartaoLeitura.builder()
 				.comNumero(venda.getNumeroCartao())
@@ -170,32 +171,10 @@ public class VendaNovaTest {
 	@Test
 	public void deveAtribuirCartaoESaldoAtual_quandoOCartaoEACompraForemValidos() {
 		
-		VendaNova venda = construirVendaValida();
-		
-		CartaoLeitura cartao = CartaoLeitura.builder()
-				.comNumero(venda.getNumeroCartao())
-				.comValidade(venda.getValidade())
-				.comSaldo(BigDecimal.TEN)
-				.comSenha(SenhaUtil.encriptar(venda.getSenha()))
-				.build();
-		
+		VendaNova venda = VendaFactory.construir();
+		CartaoLeitura cartao = CartaoFactory.construir(venda);
 		venda.setCartao(cartao);
 		assertNotNull(venda.getCartao());
 		assertNotNull(venda.getSaldoAnterior());
-	}
-
-	private VendaNova construirVendaValida() {
-		
-		String numero = "1234567890987654";
-		LocalDate validade = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-		
-		return VendaNova.builder()
-				.comCartao(numero)
-				.comCvv(new Cvv(numero, validade).get())
-				.comEstabelecimento("Loja")
-				.comSenha("1234")
-				.comValidade(validade)
-				.comValor(BigDecimal.valueOf(1))
-				.build();
 	}
 }

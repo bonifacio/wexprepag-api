@@ -1,6 +1,7 @@
 package com.bonifacio.wexprepag.api.usecase;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ public class AutorizaVenda {
 	}
 
 	public ResultadoOperacao autorizar(VendaNova vendaNova) {
-
+		
+		Objects.requireNonNull(vendaNova, "o objeto vendaNova não pode ser nulo");
 		CartaoLeitura cartaoLeitura = buscaCartaoGateway.buscarPor(vendaNova.getNumeroCartao());
 		vendaNova.setCartao(cartaoLeitura);
 		registraVenda.registrar(vendaNova);
