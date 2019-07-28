@@ -1,5 +1,7 @@
 package com.bonifacio.wexprepag.api.gateway.http;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ public class CartaoResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<EmissaoCartaoResponse> emitir(@RequestBody EmissaoCartaoRequest emissaoCartaoRequestBody) {
+	public ResponseEntity<EmissaoCartaoResponse> emitir(@Valid @RequestBody EmissaoCartaoRequest emissaoCartaoRequestBody) {
 		CartaoNovo cartao = emiteCartao.emitir(emissaoCartaoRequestBody.getNome(), emissaoCartaoRequestBody.getSaldo());
 		return ResponseEntity.ok(EmissaoCartaoResponse.of(cartao));
 	}

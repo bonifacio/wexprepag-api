@@ -1,5 +1,7 @@
 package com.bonifacio.wexprepag.api.gateway.http;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ public class VendaResource {
 	}
 
 	@PostMapping("/autorizacao")
-	public ResponseEntity<AutorizacaoVendaResponse> autorizar(@RequestBody AutorizacaoVendaRequest autorizacaoVendaRequest) {
+	public ResponseEntity<AutorizacaoVendaResponse> autorizar(@Valid @RequestBody AutorizacaoVendaRequest autorizacaoVendaRequest) {
 		ResultadoOperacao resultadoOperacao = autorizaVenda.autorizar(autorizacaoVendaRequest.getVenda());
 		return ResponseEntity.ok(AutorizacaoVendaResponse.of(resultadoOperacao));
 	}
