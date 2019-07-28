@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.bonifacio.wexprepag.api.domain.Transacao;
 import com.bonifacio.wexprepag.api.gateway.PersisteTransacaoGateway;
-import com.bonifacio.wexprepag.api.gateway.database.entity.CartaoData;
 import com.bonifacio.wexprepag.api.gateway.database.entity.TransacaoData;
 import com.bonifacio.wexprepag.api.gateway.database.repository.CartaoRepository;
 import com.bonifacio.wexprepag.api.gateway.database.repository.TransacaoRepository;

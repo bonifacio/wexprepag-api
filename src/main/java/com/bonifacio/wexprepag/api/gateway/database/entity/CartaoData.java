@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.bonifacio.wexprepag.api.domain.Cartao;
+
 @Entity
 @Table(name = "cartao")
 public class CartaoData {
@@ -21,44 +23,39 @@ public class CartaoData {
 	private String senha;
 
 	private BigDecimal saldo;
+	
+	@Deprecated
+	public CartaoData() { }
+
+	private CartaoData(Cartao cartao) {
+		this.numero = cartao.getNumero();
+		this.nome = cartao.getNumero();
+		this.validade = cartao.getValidade();
+		this.senha = cartao.getSenhaCriptografada();
+		this.saldo = cartao.getSaldo();
+	}
 
 	public String getNumero() {
 		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public LocalDate getValidade() {
 		return validade;
-	}
-
-	public void setValidade(LocalDate validade) {
-		this.validade = validade;
 	}
 
 	public String getSenha() {
 		return senha;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
 	public BigDecimal getSaldo() {
 		return saldo;
 	}
 
-	public void setSaldo(BigDecimal saldo) {
-		this.saldo = saldo;
+	public static CartaoData of(Cartao cartao) {
+		return new CartaoData(cartao);
 	}
 }

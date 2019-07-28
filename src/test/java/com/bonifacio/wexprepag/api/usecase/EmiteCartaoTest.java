@@ -1,7 +1,10 @@
 package com.bonifacio.wexprepag.api.usecase;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
 
@@ -11,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.bonifacio.wexprepag.api.CartaoFactory;
 import com.bonifacio.wexprepag.api.domain.Cartao;
 import com.bonifacio.wexprepag.api.gateway.PersisteCartaoGateway;
 
@@ -25,12 +27,31 @@ public class EmiteCartaoTest {
 	private EmiteCartao emiteCartao;
 
 	@Test
-	public void deveEmitirCartao() {
+	public void deveEmitirCartao_quandoTodosOsParametrosForemPassadosCorretamente() {
 		
-		Cartao cartao = CartaoFactory.umCartao();
-		
-		when(persisteCartaoGateway.persistir(any())).thenReturn(cartao);
-		Cartao cartaoRetornado = emiteCartao.executar("João", BigDecimal.valueOf(1000));
-		cartaoRetornado.getCvv();
+		doNothing().when(persisteCartaoGateway).persistir(any(Cartao.class));
+		Cartao cartaoRetornado = emiteCartao.emitir("João", BigDecimal.ZERO);
+		verify(persisteCartaoGateway, times(1)).persistir(any(Cartao.class));
+		assertNotNull(cartaoRetornado);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void deveLancarExcecao_quandoNomeForNulo() {
+		emiteCartao.emitir(null, BigDecimal.ZERO);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void deveLancarExcecao_quandoNomeForVazio() {
+		emiteCartao.emitir(" ", BigDecimal.ZERO);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void deveLancarExcecao_quandoSaldoForNulo() {
+		emiteCartao.emitir("João", null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void deveLancarExcecao_quandoSaldoForMenorQueZero() {
+		emiteCartao.emitir(" ", BigDecimal.valueOf(-1));
 	}
 }

@@ -17,23 +17,15 @@ public class WexprepagApiResponseEntityExceptionHandler extends ResponseEntityEx
 
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<Object> handleCartaoInexistenteException(BusinessException exception, WebRequest request) {		
-		
-		return handleExceptionInternal(
-				exception,
-				new Erro(exception.getCodigo(), exception.getMessage()),
-				new HttpHeaders(),
-				HttpStatus.BAD_REQUEST,
-				request);
+		return montarRetorno(exception, request, new Erro(exception.getCodigo(), exception.getMessage()));
 	}
 	
 	@ExceptionHandler(MappingException.class)
 	public ResponseEntity<Object> handleBusinessException(MappingException exception, WebRequest request) {
-		
-		return handleExceptionInternal(
-				exception,
-				new Erro(ExceptionUtils.getRootCauseMessage(exception)),
-				new HttpHeaders(),
-				HttpStatus.BAD_REQUEST,
-				request);
+		return montarRetorno(exception, request, new Erro(ExceptionUtils.getRootCauseMessage(exception)));
+	}
+	
+	private ResponseEntity<Object> montarRetorno(Exception exception, WebRequest request, Erro erro) {
+		return handleExceptionInternal(exception, erro, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 }

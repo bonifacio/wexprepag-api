@@ -4,5 +4,5 @@ import com.bonifacio.wexprepag.api.domain.Cartao;
 
 public interface PersisteCartaoGateway {
 
-	Cartao persistir(Cartao cartao);
+	void persistir(Cartao cartao);
 }

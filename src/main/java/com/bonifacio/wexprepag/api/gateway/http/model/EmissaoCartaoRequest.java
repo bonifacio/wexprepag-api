@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 public class EmissaoCartaoRequest {
 
-private String nome;
-	
+	private String nome;
+
 	private BigDecimal saldo;
 
 	public String getNome() {

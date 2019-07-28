@@ -1,6 +1,5 @@
 package com.bonifacio.wexprepag.api.gateway.http;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,18 +17,15 @@ import com.bonifacio.wexprepag.api.usecase.EmiteCartao;
 public class CartaoResource {
 	
 	private EmiteCartao emiteCartao;
-	private ModelMapper mapper;
 
 	@Autowired
-	public CartaoResource(EmiteCartao emiteCartao, ModelMapper mapper) {
+	public CartaoResource(EmiteCartao emiteCartao) {
 		this.emiteCartao = emiteCartao;
-		this.mapper = mapper;
 	}
 	
 	@PostMapping
 	public ResponseEntity<EmissaoCartaoResponse> emitir(@RequestBody EmissaoCartaoRequest emissaoCartaoRequestBody) {
-		
-		Cartao cartao = emiteCartao.executar(emissaoCartaoRequestBody.getNome(), emissaoCartaoRequestBody.getSaldo());
-		return ResponseEntity.ok(mapper.map(cartao, EmissaoCartaoResponse.class));
+		Cartao cartao = emiteCartao.emitir(emissaoCartaoRequestBody.getNome(), emissaoCartaoRequestBody.getSaldo());
+		return ResponseEntity.ok(EmissaoCartaoResponse.of(cartao));
 	}
 }

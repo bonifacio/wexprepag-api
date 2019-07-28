@@ -1,6 +1,9 @@
 package com.bonifacio.wexprepag.api.gateway.database;
 
-import org.modelmapper.ModelMapper;
+import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,20 +15,19 @@ import com.bonifacio.wexprepag.api.gateway.database.repository.CartaoRepository;
 @Service
 public class PersisteCartaoGatewayImpl implements PersisteCartaoGateway {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(PersisteCartaoGatewayImpl.class);
+	
 	private CartaoRepository cartaoRepository;
-	private ModelMapper mapper;
-
+	
 	@Autowired
-	public PersisteCartaoGatewayImpl(
-			CartaoRepository cartaoRepository,
-			ModelMapper mapper) {
+	public PersisteCartaoGatewayImpl(CartaoRepository cartaoRepository) {
 		this.cartaoRepository = cartaoRepository;
-		this.mapper = mapper;
 	}
 
 	@Override
-	public Cartao persistir(Cartao cartao) {
-		cartaoRepository.save(mapper.map(cartao, CartaoData.class));
-		return cartao;
+	public void persistir(Cartao cartao) {
+		Objects.requireNonNull(cartao, "O objeto cartao não pode ser nulo");
+		cartaoRepository.save(CartaoData.of(cartao));
+		LOG.info("Cartão {} gravado na base de dados", cartao.getNumero());
 	}
 }
