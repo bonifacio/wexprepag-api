@@ -13,6 +13,8 @@ import com.bonifacio.wexprepag.api.domain.VendaNova;
 import com.bonifacio.wexprepag.api.gateway.http.deserialize.VencimentoDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class AutorizacaoVendaRequest {
 
 	@Size(min = 16, max = 16, message = "deve ter 16 dígitos")
@@ -61,6 +63,7 @@ public class AutorizacaoVendaRequest {
 		return senha;
 	}
 
+	@ApiModelProperty(hidden = true)
 	public VendaNova getVenda() {
 		
 		return VendaNova.builder()
