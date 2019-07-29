@@ -2,6 +2,8 @@ package com.bonifacio.wexprepag.api.gateway.database;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import com.bonifacio.wexprepag.api.gateway.database.repository.VendaRepository;
 
 @Service
 public class PersisteVendaGatewayImpl implements PersisteVendaGateway {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(PersisteVendaGatewayImpl.class);
 	
 	private CartaoRepository cartaoRepository;
 	
@@ -35,7 +39,9 @@ public class PersisteVendaGatewayImpl implements PersisteVendaGateway {
 		if (cartao.isPresent()) {
 			venda.setCartao(cartao.get());
 			vendaRepository.save(venda);
+			LOG.info("Registrando venda {} com o valor {} para o cartão {}", venda.getId(), venda.getValor(), vendaNova.getNumeroCartao());
 		} else {
+			LOG.error("Erro ao persistir venda");
 			throw new BusinessException("Erro ao persitir a venda");
 		}
 	}
