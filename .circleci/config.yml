@@ -15,6 +15,6 @@ jobs:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
       - run: mvn test
-      - run: mvn sonar:sonar -Dsonar.projectKey=bonifacio_wexprepag-api -Dsonar.organization=bonifacio-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_WEX
+      - run: mvn sonar:sonar -Dsonar.projectKey=bonifacio_wexprepag-api -Dsonar.organization=bonifacio-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.java.binaries=target/test-classes -Dsonar.login=$SONAR_WEX
       - store_artifacts:
           path:  target
