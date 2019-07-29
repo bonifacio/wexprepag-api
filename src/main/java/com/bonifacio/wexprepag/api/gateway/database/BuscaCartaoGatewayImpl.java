@@ -25,7 +25,7 @@ public class BuscaCartaoGatewayImpl implements BuscaCartaoGateway {
 	@Override
 	public CartaoLeitura buscarPor(String numero) {
 		Optional<Cartao> cartaoData = cartaoRepository.findById(numero);
-		if (cartaoData.isEmpty()) {
+		if (!cartaoData.isPresent()) {
 			throw new BusinessException(MensagemErro.CARTAO_INEXISTENTE);
 		}
 		return cartaoData.get().getCartaoLeitura();
