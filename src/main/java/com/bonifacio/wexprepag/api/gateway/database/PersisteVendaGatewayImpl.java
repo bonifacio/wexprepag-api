@@ -11,19 +11,19 @@ import com.bonifacio.wexprepag.api.gateway.PersisteVendaGateway;
 import com.bonifacio.wexprepag.api.gateway.database.entity.Cartao;
 import com.bonifacio.wexprepag.api.gateway.database.entity.Venda;
 import com.bonifacio.wexprepag.api.gateway.database.repository.CartaoRepository;
-import com.bonifacio.wexprepag.api.gateway.database.repository.TransacaoRepository;
+import com.bonifacio.wexprepag.api.gateway.database.repository.VendaRepository;
 
 @Service
 public class PersisteVendaGatewayImpl implements PersisteVendaGateway {
 	
 	private CartaoRepository cartaoRepository;
 	
-	private TransacaoRepository transacaoRepository;
+	private VendaRepository vendaRepository;
 	
 	@Autowired
-	public PersisteVendaGatewayImpl(CartaoRepository cartaoRepository, TransacaoRepository transacaoRepository) {
+	public PersisteVendaGatewayImpl(CartaoRepository cartaoRepository, VendaRepository vendaRepository) {
 		this.cartaoRepository = cartaoRepository;
-		this.transacaoRepository = transacaoRepository;
+		this.vendaRepository = vendaRepository;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class PersisteVendaGatewayImpl implements PersisteVendaGateway {
 		Optional<Cartao> cartao = cartaoRepository.findById(vendaNova.getNumeroCartao());
 		if (cartao.isPresent()) {
 			venda.setCartao(cartao.get());
-			transacaoRepository.save(venda);
+			vendaRepository.save(venda);
 		} else {
 			throw new BusinessException("Erro ao persitir a venda");
 		}
