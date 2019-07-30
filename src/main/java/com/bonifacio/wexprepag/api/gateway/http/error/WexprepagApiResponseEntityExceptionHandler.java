@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -17,6 +19,8 @@ import com.bonifacio.wexprepag.api.domain.exception.BusinessException;
 
 @ControllerAdvice
 public class WexprepagApiResponseEntityExceptionHandler {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(WexprepagApiResponseEntityExceptionHandler.class);
 
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<Object> handleCartaoInexistenteException(BusinessException exception) {		
@@ -36,7 +40,8 @@ public class WexprepagApiResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleDefaultException(Exception exception, WebRequest request) {		
+	public ResponseEntity<Object> handleDefaultException(Exception exception, WebRequest request) {
+		LOG.error(ExceptionUtils.getRootCauseMessage(exception));
 		return	ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Erro("ocorreu um erro inesperado"));
 	}
 	

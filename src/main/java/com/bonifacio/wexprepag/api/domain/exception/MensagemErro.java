@@ -5,7 +5,8 @@ public enum MensagemErro {
 	CARTAO_EXPIRADO("02", "cartão expirado"),
 	CVV_INVALIDO("03", "cvv inválido"),
 	SENHA_INVALIDA("04", "senha inválida"),
-	SALDO_INSUFICIENTE("05", "saldo insuficiente");
+	SALDO_INSUFICIENTE("05", "saldo insuficiente"),
+	DATA_VALIDADE_INVALIDA("06", "data de validade inválida");
 	
 	private String codigo;
 	

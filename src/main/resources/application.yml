@@ -6,6 +6,7 @@ spring:
     password: 123456
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
   h2:
     console:
       enabled: true
@@ -13,3 +14,5 @@ spring:
 
   jackson:
     default-property-inclusion: non-null
+server:
+  port: 8081

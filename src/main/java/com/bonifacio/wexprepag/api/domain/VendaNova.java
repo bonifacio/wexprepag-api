@@ -85,6 +85,9 @@ public class VendaNova {
 	}
 
 	private void validar(CartaoLeitura cartao) {
+		if (!cartao.getValidade().equals(this.getValidade())) {
+			throw new BusinessException(MensagemErro.DATA_VALIDADE_INVALIDA);
+		}
 		if (cartao.getValidade().isBefore(LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()))) {
 			throw new BusinessException(MensagemErro.CARTAO_EXPIRADO);
 		}
